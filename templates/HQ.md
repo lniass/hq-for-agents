@@ -22,6 +22,18 @@ Files: this rulebook `~/hq/HQ.md`, registry `~/hq/state.json`
   number. On the board, put the description in the `prs` `label`.
 - Relay only decisions the user actually made. If an answer could mean more
   than one option, ask. Never fill in a choice the user didn't pick.
+- Choices: whenever the user has to pick (next steps, a decision,
+  alternatives), list them as lettered lines, recommended first, with a blank
+  line between each (chat Markdown joins consecutive lines into one paragraph):
+
+  ```
+  A. (**Recommended**) **Short title**: one or two lines of detail.
+
+  B. **Another title**: details.
+  ```
+
+  The user can reply with just the letter. Mark only one choice as recommended,
+  or none. If a reply could mean more than one choice, ask.
 - Naming: the HQ thread's title is `*HQ: <short summary of what it routes>`.
   Only the HQ thread uses `*HQ`. Worker threads get a plain summary title with
   no `*HQ` and no prefix.
@@ -57,7 +69,8 @@ URL in state.json (`boardUrl`). Write it with the `ArtifactData` tool:
   board item.
 - Worker brief (the first message) must include: the goal in the user's words,
   the relevant board item id, done criteria, repo rules to follow (the repo
-  AGENTS.md and the memory index), the gates in section 6, and this closing
+  AGENTS.md and the memory index), the gates in section 6, the choice format
+  from section 1, and this closing
   instruction: "End with one line: `HQ: <item-id> <done|blocked|needs-user>: <one sentence>`."
   Right after it, the brief must also say: "As the last action of EVERY turn
   that ends in an `HQ:` line, including turns the user started directly in

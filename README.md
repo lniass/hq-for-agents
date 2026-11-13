@@ -81,6 +81,9 @@ Using another tool? Start with [docs/adapting.md](docs/adapting.md).
   launches up to 3 workers from Ready on its own.
 - **Gates.** Deploys, migrations, production settings, SSH, deletes and
   spending always wait for you, in every mode.
+- **Tap-friendly choices.** Every decision is offered as lettered lines,
+  recommended first (`A. (**Recommended**) **Title**: details`), so you can
+  reply with one letter.
 - **`/hq` from anywhere.** `/hq <instruction>` forwards to HQ. `/hq` alone
   shows what needs you.
 - **Context handoff.** Every thread checks its context size every 10 messages
