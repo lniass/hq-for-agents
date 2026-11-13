@@ -155,6 +155,9 @@ Long threads get slow and lose detail, so every HQ-managed thread (HQ and
 workers) checks its own context size every 10 user messages and hands off
 above 300k tokens. Both numbers live in state.json (`contextCheckEveryMessages`,
 `contextHandoffTokens`) and may be retuned; read them there, not from here.
+When the user asks to change either one (directly or via `/hq`), HQ updates
+state.json, records the change in the board's `meta/hq` note, and confirms in
+one line. No other file changes.
 - **Check:** at the end of every turn, run
   `python3 -I ~/hq/context_check.py <nonce>` with a fresh nonce typed
   literally in the command (no `$(...)`: the transcript records the command as

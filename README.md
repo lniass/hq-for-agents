@@ -87,7 +87,41 @@ Using another tool? Start with [docs/adapting.md](docs/adapting.md).
 - **`/hq` from anywhere.** `/hq <instruction>` forwards to HQ. `/hq` alone
   shows what needs you.
 - **Context handoff.** Every thread checks its context size every 10 messages
-  and hands off to a fresh thread above 300k tokens.
+  and hands off to a fresh thread above 300k tokens. See below.
+
+## Context limits
+
+Long agent threads get slow, cost more, and start forgetting early details.
+So every thread HQ manages (HQ and its workers) watches its own size and hands
+off before that happens.
+
+**Defaults**
+
+| Setting | Default | What it means |
+|---|---|---|
+| `contextCheckEveryMessages` | `10` | How often a thread checks its size, counted in user messages |
+| `contextHandoffTokens` | `300000` | Above this many tokens, the thread hands off to a fresh one |
+
+**How it works.** At the end of every turn, a thread runs
+`templates/context_check.py` (installed as `~/hq/context_check.py`). When a
+check is due and the thread is over the limit, it writes a self-contained
+brief (goal, decisions, gates, current state, open questions), launches a
+fresh thread with it, and retires itself. HQ does the same for itself and
+records the new HQ thread in `~/hq/state.json`, so workers always report to
+the right place.
+
+**Changing it.** You don't need to edit any files. Just tell HQ, in the HQ
+thread or with `/hq` from any thread:
+
+```
+/hq set the context handoff limit to 200k tokens
+/hq check context size every 5 messages
+```
+
+HQ updates `~/hq/state.json` and confirms. Every thread reads the values from
+there on its next check, so the change applies everywhere at once. Lower the
+limit if threads feel slow before they hand off. Raise it if handoffs happen
+too often.
 
 ## Lessons from real use
 
