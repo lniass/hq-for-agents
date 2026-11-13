@@ -1,0 +1,10 @@
+{
+  "hqThreadId": null,
+  "hqThreadLink": null,
+  "boardUrl": null,
+  "mode": "observe",
+  "watchdogTaskId": null,
+  "createdAt": null,
+  "contextHandoffTokens": 300000,
+  "contextCheckEveryMessages": 10
+}
