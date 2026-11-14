@@ -53,6 +53,28 @@ them, scheduled tasks and a shared store.
 
 Using another tool? Start with [docs/adapting.md](docs/adapting.md).
 
+## Commands
+
+Type these in any thread. More commands will be added here as HQ grows.
+
+| Command | What it does |
+|---|---|
+| `/hq` | Shows what needs you: the Needs you items, plus links to the board and the HQ thread. |
+| `/hq <instruction>` | Sends an instruction to HQ from whatever thread you're in. HQ acts on it in the HQ thread, and you get a one-line confirmation where you typed it. |
+
+Things you can ask with `/hq <instruction>`, in plain words:
+
+```
+/hq add a task: clean up the old feature flags
+/hq switch to auto mode
+/hq set the context handoff limit to 200k tokens
+/hq check context size every 5 messages
+```
+
+The last two change the [context limits](#context-limits). HQ updates
+`~/hq/state.json` and confirms, and every thread uses the new value from its
+next check. No file editing needed.
+
 ## What's inside
 
 | File | What it is |
@@ -110,16 +132,7 @@ fresh thread with it, and retires itself. HQ does the same for itself and
 records the new HQ thread in `~/hq/state.json`, so workers always report to
 the right place.
 
-**Changing it.** You don't need to edit any files. Just tell HQ, in the HQ
-thread or with `/hq` from any thread:
-
-```
-/hq set the context handoff limit to 200k tokens
-/hq check context size every 5 messages
-```
-
-HQ updates `~/hq/state.json` and confirms. Every thread reads the values from
-there on its next check, so the change applies everywhere at once. Lower the
+**Changing it.** Ask HQ; see [Commands](#commands) for what to type. Lower the
 limit if threads feel slow before they hand off. Raise it if handoffs happen
 too often.
 
