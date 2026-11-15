@@ -52,7 +52,8 @@ not an error. Then delete `~/hq/context-checks/` so the counts start clean.
 Publish `~/hq/board.html` as a private Artifact with the shared database
 (`db` capability). Load the `artifact-capabilities` skill first. Put its URL in
 `boardUrl` in state.json. Then write the items from step 3, plus a `meta/hq`
-doc (`lastSweep`, `mode: "observe"`, `note`), with one `ArtifactData` batch.
+doc (`lastSweep`, `mode: "observe"`, `note`, `idleSweeps: 0`,
+`watchdog: "running"`), with one `ArtifactData` batch.
 
 ## 5. Launch the HQ thread
 Use `t3_thread_launch` with the title `*HQ: <short summary of what it routes>`,

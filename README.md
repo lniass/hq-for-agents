@@ -75,17 +75,24 @@ The last two change the [context limits](#context-limits). HQ updates
 `~/hq/state.json` and confirms, and every thread uses the new value from its
 next check. No file editing needed.
 
+**Preferences every thread follows.** Rules you want in every thread, HQ and
+running workers included, go in your user-level `~/.claude/CLAUDE.md`. Claude
+Code loads it in every session, so a new rule there reaches all threads on
+their next start. For workers that are already running, ask HQ to pass the
+rule on in its next follow-up.
+
 ## What's inside
 
 | File | What it is |
 |---|---|
 | [SETUP_PROMPT.md](SETUP_PROMPT.md) | The prompt you paste into your agent |
-| [templates/HQ.md](templates/HQ.md) | The rulebook HQ follows: role, modes, board, workers, sweep, gates, handoff |
+| [templates/HQ.md](templates/HQ.md) | The rulebook HQ follows: role, modes, board, workers, sweep and idle pause, gates, handoff, choice questions |
 | [templates/state.json](templates/state.json) | The registry: HQ thread id, board URL, watchdog id, mode, thresholds |
 | [templates/context_check.py](templates/context_check.py) | Checks a thread's context size and says when to hand off |
 | [templates/board.html](templates/board.html) | The board page (four lanes, Needs you first) |
 | [templates/hq-skill.md](templates/hq-skill.md) | The `/hq` command |
 | [templates/skills/generate-secret/](templates/skills/generate-secret/) | Optional: create secrets without showing them in chat |
+| [templates/skills/caveman/](templates/skills/caveman/) | Optional: a terse chat style that saves output tokens |
 | [docs/adapting.md](docs/adapting.md) | How to run HQ outside T3 Code |
 
 ## How it works
@@ -99,14 +106,17 @@ next check. No file editing needed.
   turn with `HQ: <item-id> <done|blocked|needs-user>: <one sentence>`, then
   sends that line to HQ as a `Worker report`.
 - **Watchdog sweep.** Every 30 minutes while a worker is running, every 4 hours
-  when idle. It finds stalled workers, checks PRs, and updates the board.
+  when idle. It finds stalled workers, checks PRs, and updates the board. After
+  2 idle sweeps in a row it pauses itself, and the next message of any kind
+  (from you, via `/hq`, or a worker report) wakes it up again.
 - **Observe and auto modes.** Observe proposes and waits for a yes. Auto
   launches up to 3 workers from Ready on its own.
 - **Gates.** Deploys, migrations, production settings, SSH, deletes and
   spending always wait for you, in every mode.
-- **Tap-friendly choices.** Every decision is offered as lettered lines,
-  recommended first (`A. (**Recommended**) **Title**: details`), so you can
-  reply with one letter.
+- **Tap-friendly choices.** Decisions come as numbered questions with lettered
+  options. One option per question is marked "(recommended)", placed first,
+  with a reason. Letters never repeat, even across messages (1: A, B;
+  2: C, D), so you can answer "1A, 2D".
 - **`/hq` from anywhere.** `/hq <instruction>` forwards to HQ. `/hq` alone
   shows what needs you.
 - **Context handoff.** Every thread checks its context size every 10 messages
@@ -153,6 +163,25 @@ API keys). Those go through your agent host's secure secret input, for example
 `request_secret` in T3 Code, never pasted into chat.
 
 To install it, copy the folder to `~/.claude/skills/generate-secret/`.
+
+## Optional: caveman chat style
+
+[templates/skills/caveman/](templates/skills/caveman/) is an optional,
+token-saving preference, not part of the core HQ. It makes agents reply in a
+terse style (no filler, fragments OK) while code, errors and technical terms
+stay exact, which cuts output tokens a lot on long working days. It switches
+back to normal wording for security warnings and irreversible actions.
+
+To enable it:
+
+1. Copy the folder to `~/.claude/skills/caveman/`.
+2. Add a line to `~/.claude/CLAUDE.md`, for example:
+   `Reply to the user in caveman style, level full: follow ~/.claude/skills/caveman/SKILL.md. Code, commits, PRs and docs stay normal.`
+3. Optional: ask HQ to add the matching line to worker briefs (see
+   `templates/HQ.md` section 4), so running workers get it in their next
+   follow-up.
+
+Turn it off by saying "stop caveman" or "normal mode", or remove the line.
 
 ## Lessons from real use
 

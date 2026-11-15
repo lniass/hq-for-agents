@@ -168,7 +168,7 @@ function renderMeta(snap) {
   const v = snap.exists ? snap.data() : null;
   if (!v) return;
   if (v.lastSweep) document.getElementById("sweep").textContent = fmtTime(v.lastSweep);
-  if (v.mode) document.getElementById("mode").textContent = v.mode + " mode";
+  if (v.mode) document.getElementById("mode").textContent = v.mode + " mode" + (v.watchdog === "paused" ? " \u00b7 sweeps paused" : "");
   if (v.note) document.getElementById("sweep-note").textContent = v.note;
 }
 

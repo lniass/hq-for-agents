@@ -37,6 +37,10 @@ tool. The rulebook names T3 tools; swap them for whatever your setup has.
 - **The optional generate-secret skill.** The script is plain Python and
   works anywhere. For provider-issued keys, point the skill at your host's own
   secure secret input instead of T3 Code's `request_secret`.
+- **Preferences for every thread.** Rules in Claude Code's user-level
+  `~/.claude/CLAUDE.md` (such as the choice format or the optional caveman
+  style) reach every session. Other harnesses need their own global
+  instructions file, or the rule repeated in each worker brief.
 - **Where the user talks to HQ.** The `/hq` command is a Claude Code skill.
   Elsewhere, a shell alias or chat shortcut that forwards text to the router
   session does the same job.
