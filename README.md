@@ -85,6 +85,7 @@ next check. No file editing needed.
 | [templates/context_check.py](templates/context_check.py) | Checks a thread's context size and says when to hand off |
 | [templates/board.html](templates/board.html) | The board page (four lanes, Needs you first) |
 | [templates/hq-skill.md](templates/hq-skill.md) | The `/hq` command |
+| [templates/skills/generate-secret/](templates/skills/generate-secret/) | Optional: create secrets without showing them in chat |
 | [docs/adapting.md](docs/adapting.md) | How to run HQ outside T3 Code |
 
 ## How it works
@@ -135,6 +136,23 @@ the right place.
 **Changing it.** Ask HQ; see [Commands](#commands) for what to type. Lower the
 limit if threads feel slow before they hand off. Raise it if handoffs happen
 too often.
+
+## Optional: the generate-secret skill
+
+[templates/skills/generate-secret/](templates/skills/generate-secret/) is an
+optional extra skill. Workers often need a secret that *you* create, such as a
+webhook signing secret, a cron secret or an internal API token. This skill
+writes a random value into a private file (folder mode 700, file mode 600,
+never overwritten) and prints only the path, the length and a SHA-256 hash. The
+value itself never appears in chat, where transcripts are stored. You copy it
+into your password manager, and the skill deletes the file afterwards
+(`--remove`).
+
+It is **not** for keys a provider issues to you (payment, email, cloud or model
+API keys). Those go through your agent host's secure secret input, for example
+`request_secret` in T3 Code, never pasted into chat.
+
+To install it, copy the folder to `~/.claude/skills/generate-secret/`.
 
 ## Lessons from real use
 

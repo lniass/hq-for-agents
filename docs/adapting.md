@@ -34,6 +34,9 @@ tool. The rulebook names T3 tools; swap them for whatever your setup has.
   Another harness needs its own way to find the session's transcript and its
   latest token count. The nonce trick (find "my" transcript by a unique string
   in my own command) works anywhere the command is logged as typed.
+- **The optional generate-secret skill.** The script is plain Python and
+  works anywhere. For provider-issued keys, point the skill at your host's own
+  secure secret input instead of T3 Code's `request_secret`.
 - **Where the user talks to HQ.** The `/hq` command is a Claude Code skill.
   Elsewhere, a shell alias or chat shortcut that forwards text to the router
   session does the same job.
