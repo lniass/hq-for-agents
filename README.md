@@ -164,6 +164,11 @@ API keys). Those go through your agent host's secure secret input, for example
 
 To install it, copy the folder to `~/.claude/skills/generate-secret/`.
 
+With the skill installed, HQ's rulebook (section 10) makes this the default: when
+a worker needs a secret that *you* would otherwise create and paste, it proposes
+generating and setting it for you instead, and gives you one `cat` command to
+copy the value into your password manager. Worker briefs carry a line for it.
+
 ## Optional: caveman chat style
 
 [templates/skills/caveman/](templates/skills/caveman/) is an optional,

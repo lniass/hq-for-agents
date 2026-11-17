@@ -82,6 +82,10 @@ URL in state.json (`boardUrl`). Write it with the `ArtifactData` tool:
   choice-questions section: one option per question marked (recommended);
   letters continue across the questions of a message (1: A,B; 2: C,D) and are
   not reused in the next message."
+  Include the secrets line (only if the generate-secret skill is installed, see
+  section 10): "If you need a secret that we can create ourselves (signing key,
+  HMAC key, webhook or cron secret, internal API token), don't ask the user to
+  make one: propose the generate-secret skill (section 10 of HQ.md)."
   If the user has enabled an optional chat style (for example the caveman
   skill, see the README), include one line for it too, e.g. "Reply to the user
   in caveman full style (~/.claude/skills/caveman/SKILL.md); code, PRs and
@@ -224,3 +228,25 @@ one line. No other file changes.
 - Each message with choices still ends with the usual
   "HQ: <item-id> needs-user: ..." line (workers) or the decision on the board
   (HQ).
+
+## 10. Secrets (needs the optional generate-secret skill)
+Applies to HQ and every worker. Chat transcripts are stored, so a secret that
+appears in chat, a command line, a commit, a log or a memory file counts as
+leaked.
+- **A secret we can create ourselves** (signing or HMAC key, webhook secret we
+  choose, cron secret, internal API token): never ask the user to generate it
+  and paste it to you. Instead propose: "I'll generate it with the
+  generate-secret skill and set it for you." On the user's yes (setting a
+  secret is a gate, section 6), run the skill, then set the value where it
+  belongs without printing it.
+- Give the user exactly one command to read the value into their password
+  manager, for example `cat ~/.config/<project>-secrets/<name>`. Never show the
+  value itself.
+- Verify with the SHA-256 the skill printed, never by echoing the value.
+- When the secret is set and saved, ask before deleting the file
+  (`generate.py <name> --remove`). Deleting is a gate.
+- **A key a provider issues** (payment, email, cloud or model API keys): the
+  skill is not for these. Use the agent host's secure secret input (for
+  example `request_secret` in T3 Code), never chat.
+- Without the skill installed, this section does not apply: use the secure
+  input for every secret.

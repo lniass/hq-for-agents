@@ -37,6 +37,8 @@ tool. The rulebook names T3 tools; swap them for whatever your setup has.
 - **The optional generate-secret skill.** The script is plain Python and
   works anywhere. For provider-issued keys, point the skill at your host's own
   secure secret input instead of T3 Code's `request_secret`.
+  Section 10 of `templates/HQ.md` and the secrets line in the worker brief only
+  apply when this skill is installed; drop both otherwise.
 - **Preferences for every thread.** Rules in Claude Code's user-level
   `~/.claude/CLAUDE.md` (such as the choice format or the optional caveman
   style) reach every session. Other harnesses need their own global
